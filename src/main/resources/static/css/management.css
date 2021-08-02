@@ -1,0 +1,75 @@
+.topbar-wrapper {
+    /*设置宽度*/
+    width: 100%;
+    /*设置高度*/
+    height: 120px;
+    /*设置行高*/
+    line-height: 50px;
+}
+
+.topbar-wrapper .welcome {
+    height: 50px;
+    font-size: 14px;
+    margin-left: 20px;
+}
+
+.topbar-wrapper .welcome .repository {
+    font-weight: bolder;
+}
+
+.topbar-wrapper .welcome a {
+    font-size: 18 px;
+    color: aliceblue;
+    text-decoration-line: underline;
+}
+
+.topbar-wrapper .navigation-bar {
+    height: 70px;
+    line-height: 70px;
+    background-color: white;
+    color: #2F4056;
+    position: relative;
+    border-bottom: 1px #cccccc solid;
+}
+
+.topbar-wrapper .navigation-bar .home {
+    font-size: 20px;
+    position: relative;
+    float: left;
+    left: 150px;
+    top: -40px;
+}
+
+.topbar-wrapper .navigation-bar .home img {
+    height: 40px;
+    width: 40px;
+    left: -45px;
+    top: 55px;
+}
+
+/*中部*/
+
+.banner-wrapper{
+    width: 85%;
+    margin: 0 auto;
+}
+
+.banner-wrapper .show{
+    margin-top: 30px;
+    position: relative;
+    left: -80px;
+}
+
+.banner-wrapper .banner-left{
+    width: 17.15%;
+
+    float: left;
+}
+
+.banner-wrapper .banner-right{
+    border: 1px solid slategrey;
+    width: 82.85%;
+
+    height: 495px;
+    float: left;
+}

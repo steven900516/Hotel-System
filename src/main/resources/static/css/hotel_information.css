@@ -1,0 +1,232 @@
+.topbar-wrapper {
+    /*设置宽度*/
+    width: 100%;
+    /*设置高度*/
+    height: 120px;
+    /*设置行高*/
+    line-height: 50px;
+}
+
+.topbar-wrapper .welcome {
+    height: 50px;
+    font-size: 14px;
+    margin-left: 20px;
+}
+
+.topbar-wrapper .welcome .repository {
+    font-weight: bolder;
+}
+
+.topbar-wrapper .welcome a {
+    font-size: 18px;
+    color: aliceblue;
+    text-decoration-line: underline;
+}
+
+.topbar-wrapper .navigation-bar {
+    height: 70px;
+    line-height: 70px;
+    background-color: white;
+    color: #2F4056;
+    position: relative;
+    border-bottom: 1px #cccccc solid;
+}
+
+.topbar-wrapper .navigation-bar .home {
+    font-size: 20px;
+    position: relative;
+    float: left;
+    left: 100px;
+    top: 0px;
+}
+
+.topbar-wrapper .navigation-bar .home img {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    left: 0px;
+    top: 13px;
+}
+
+.topbar-wrapper .navigation-bar .service {
+    position: relative;
+    float: right;
+    right: 100px;
+}
+
+.topbar-wrapper .navigation-bar .service li {
+    position: relative;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #2F4056;
+}
+
+/*中部*/
+.banner-container {
+    width: 85%;
+    margin: 20px auto;
+}
+
+.banner-container .lunbo{
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+    background-color:red;
+}
+
+.banner-container .banner-nav{
+    margin-bottom: 10px;
+    height: 50px;
+    width: 100%;
+}
+
+/* .banner-container .banner-nav li{
+    margin-right: 10px;
+    float: left;
+} */
+
+.banner-container .hotel-intro{
+    height: 400px;
+    /*background-color:red;*/
+}
+
+.hotel-intro{
+    color: #2F4056;
+}
+
+#hotel_name{
+    font-size: 40px;
+    color: #2F4056;
+}
+#hotel-intro{
+    font-size: 20px;
+}
+.star{
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+#star-font{
+    color: #FFB800;
+    font-size: 15px;
+    height: 22px;
+    padding-top: 7px;
+}
+
+#numStar{
+    position: relative;
+    top: -1px;
+}
+
+.num-view{
+    position: relative;
+    top: 90px;
+}
+
+.rating-view{
+    position: relative;
+    top: 70px;
+    left: 150px;
+}
+
+#location-intro{
+    position: relative;
+    top: 50px;
+    left: 700px;
+}
+
+.banner-container .hotel-intro .introcard{
+    height: 400px;
+    width: 80%;
+    float: left;
+}
+
+.banner-container .hotel-intro .reserve{
+    height: 400px;
+    width: 20%;
+    float: left;
+    margin-top: 0px;
+    margin-left: 6px;
+}
+
+.banner-container .hotel-serve{
+    height: 400px;
+    background-color:chartreuse;
+}
+
+#reserve_money{
+    font-size: 30px;
+}
+
+#every{
+    font-size: 18px;
+}
+
+#test6{
+    margin-top: 30px;
+}
+
+#people{
+    width: 95%;
+}
+
+#total{
+    font-size: 20px;
+    display: block;
+    margin-top: 16px;
+    color: red;
+}
+
+#check_time{
+    font-size: 12px;
+}
+
+
+#money{
+    display: block;
+    position: relative;
+    left: 80px;
+    top: -18px;
+    font-size: 18px;
+}
+
+#slideTest1{
+    margin-top: 10px;
+    margin-right: 5px;
+    /*position: relative;*/
+    /*top: -20px;*/
+    /*left: 70px;*/
+
+}
+
+#peopleNum{
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+
+.banner-container .hotel-map{
+    height: 500px;
+}
+
+.banner-container .hotel-view{
+    height: 400px;
+}
+
+
+textarea{
+    resize: none;
+
+}
+
+#back{
+    cursor: pointer;
+
+}
+
+#back :hover{
+    font-size: larger;
+    color: #01AAED;
+    transition-delay: 0.1s;
+}

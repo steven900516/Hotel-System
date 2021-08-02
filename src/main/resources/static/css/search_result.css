@@ -1,0 +1,10 @@
+#middlePart{
+    width: 1300px;
+    margin: 0px auto;
+}
+
+.layui-table-cell{
+    text-align:center;
+    height:auto;
+    white-space:normal;
+}

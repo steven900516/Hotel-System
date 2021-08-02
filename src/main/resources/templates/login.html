@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>登录</title>
+
+
+  <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans'>
+  <link rel="stylesheet" href="layui/css/layui.css">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="shortcut icon" href="images/favicon.ico" />
+
+
+</head>
+
+<body>
+  <div class="topbar-wrapper layui-bg-cyan">
+    <!--顶部欢迎界面-->
+    <div class="welcome">
+      欢迎访问Hotel.com。继续访问
+      <strong class="repository">项目仓库：</strong>
+      <a href="https://gitlab.suncaper.net/steven900516/hotel" >gitlab.suncaper.net/steven900516/hotel</a>
+    </div>
+    <!--顶部导航栏-->
+
+  </div>
+
+  <div class="cont">
+    <div class="form sign-in">
+      <h2>欢迎回来~</h2>
+      <label>
+        <span>Username</span>
+        <input type="text" id="rusername"/>
+      </label>
+      <label>
+        <span>Password</span>
+        <input type="password" id="rpassword"/>
+      </label>
+
+      <button type="button" class="submit"  id="login">登录</button>
+
+    </div>
+    <div class="sub-cont">
+      <div class="img">
+        <div class="img__text m--up">
+          <h2>新来的？</h2>
+          <p>来注册体验美好的感觉！</p>
+        </div>
+        <div class="img__text m--in">
+          <h2>其中一员?</h2>
+          <p>如果您有账号，请直接登录</p>
+        </div>
+        <div class="img__btn">
+          <span class="m--up">注册</span>
+          <span class="m--in" id="lo">登入</span>
+        </div>
+
+      </div>
+      <div class="form sign-up">
+        <h2>让你重感温馨~</h2>
+        <label>
+          <span>Name</span>
+          <input type="text" id="username" />
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" id="iemail" />
+        </label>
+        <label>
+          <span>验证码</span>
+          <input type="text" id="email" />
+          <button type="button" class="layui-btn layui-btn-primary layui-btn-fluid" id="send">获取验证码</button>
+        </label>
+
+        <label>
+          <span>Password</span>
+          <input type="password" id="password" />
+        </label>
+        <button type="button" class="submit" id="regist">注册</button>
+
+      </div>
+    </div>
+  </div>
+  <script src="/layui/layui.all.js"></script>
+  <script src="js/jquery-1.12.4.min.js"></script>
+  <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script src="js/login.js"></script>
+
+  <script>
+
+
+
+
+    var countdown = 120;//倒计时总时间
+    function settime() {
+      if (countdown == 0) {
+        $("#send").attr("disabled", false);
+        $("#send").html("获取验证码");
+        $("#send").removeClass("disabled");
+        countdown = 120;
+        return;
+      } else {
+        $("#send").addClass("disabled");
+        $("#send").attr("disabled", true);
+        $("#send").css("color", "red");
+        $("#send").html("重新发送(" + countdown + ")");
+        countdown--;
+      }
+      setTimeout(settime, 1000);
+    }
+
+    layui.use('layer', function () {
+      $("#login").click(function(){
+        $.ajax({
+          url: '/user/login',
+          type: 'post',
+          dataType: 'json',
+          data: {
+            username: $("#rusername").val(),
+            password: $("#rpassword").val()
+          },
+          success: function (res) {
+            console.log(res)
+            if(res.message == "yes"){
+              var index = layer.load(2, {time: 3*1000}
+              ); //又换了种风格，并且设定最长等待10秒
+              window.location = "/"
+            }else{
+              layer.msg('用户不存在或密码错误！', {
+                icon: 4,
+                time: 2000,
+                anim: 2,
+              });
+            }
+
+          }
+        })
+      })
+
+
+      $("#send").click(function () {
+        $.ajax({
+          url: '/user/sendmail',
+          type: 'post',
+          data: {
+            sendTo: $("#iemail").val()
+          },
+          success: function (res) {
+            var countdown = 120;
+            if (res == "success") {
+              layer.msg('验证码已发送，请在两分钟内注意查收，超时需要重新发送', {
+                icon: 1,
+                time: 2000,
+                anim: 2,
+                area: ['500px', '100px']
+              });
+              settime()
+            }
+          }
+        })
+      })
+
+
+
+      $("#regist").click(function () {
+        $.ajax({
+          url: '/user/confirm',
+          type: 'post',
+          dataType: 'json',
+          data: {
+            username: $("#username").val(),
+            email: $("#iemail").val(),
+            password: $("#password").val(),
+          },
+          success: function (res) {
+            if (res.data == "success") {
+              if ($("#email").val() == $.cookie('code')) {
+                $.ajax({
+                  url: '/user/regist',
+                  type: 'post',
+                  dataType: 'json',
+                  data: {
+                    username: $("#username").val(),
+                    email: $("#iemail").val(),
+                    password: $("#password").val(),
+                  },
+                  success: function (res) {
+                    if (res.message == "success") {
+                      layer.msg('成功注册~', {
+                        icon: 1,
+                        time: 2000,
+                        anim: 2,
+                      });
+                    }
+                  }
+                })
+              } else {
+                layer.msg('验证码出错或超时，请重新发送', {
+                  icon: 4,
+                  time: 2000,
+                  anim: 2,
+                });
+              }
+
+            } else if (res.message == "exist") {
+              layer.msg('该用户名已存在哦~请换一个', {
+                icon: 4,
+                time: 2000,
+                anim: 2,
+              });
+            }
+          }
+        })
+      })
+    }
+    )
+  </script>
+
+</body>
+
+</html>

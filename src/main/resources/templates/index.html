@@ -1,0 +1,346 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <!--引入重置样式表-->
+    <link rel="stylesheet" href="css/reset.css">
+    <!--引入公共样式表-->
+    <link rel="stylesheet" href="css/base.css">
+    <!--引入当前页面样式表-->
+    <link rel="stylesheet" href="css/index.css">
+    <!--引入图标字体样式-->
+    <script src="https://kit.fontawesome.com/8d6e7b9682.js" crossorigin="anonymous"></script>
+    <!--轮播样式-->
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <!--semanticUI-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico"/>
+    <title>主页</title>
+</head>
+
+<body>
+<!--顶部-->
+<div class="topbar-wrapper layui-bg-cyan">
+    <!--顶部欢迎界面-->
+    <div class="welcome">
+        欢迎访问Hotel.com。继续访问
+        <strong class="repository">项目仓库：</strong>
+        <a href="https://gitlab.suncaper.net/steven900516/hotel">gitlab.suncaper.net/steven900516/hotel</a>
+        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" style="position: relative;left: 600px"
+                id="enter">管理员入口
+            <i class="layui-icon layui-icon-right"></i>
+        </button>
+    </div>
+    <!--顶部导航栏-->
+    <div class="navigation-bar">
+        <!--左侧导航栏-->
+        <div class="home">
+            <img class="ui medium circular image" src="images/index.png">
+            hotel auxiliary system
+        </div>
+        <!--右侧导航栏-->
+        <ul class="service">
+            <li><a href="/personal" id="comm">个人评论管理</a></li>
+            <li><a href="/my_order" id="own_order">我的订单</a></li>
+            <li><a href="/login" id="lohr">登录/注册</a></li>
+        </ul>
+    </div>
+</div>
+<!--中部搜索框-->
+<div class="search-bgimg">
+    <img id="bgimg"
+         src="images/src=http___ww1.sinaimg.cn_large_9ca80903jw1f9f3zz16ksj24g02hs4qs.jpg&refer=http___www.sina.jfif">
+    <div class="search-wrapper">
+        <ul class="search-list">
+            <li class="search-font">搜索住宿</li>
+            <li class="hotel-font"><i class="fa fa-university" aria-hidden="true"></i></li>
+            <li class="search-bar">
+                <div class="ui category search">
+                    <div class="ui icon input" id="search-bar">
+                        <input class="prompt" type="text" placeholder="Search hotel..." id="hotel_name">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+            </li>
+            <li class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                    </div>
+                    <div class="layui-inline" id="test6">
+                        <div class="layui-input-inline">
+                            <div class="data-in">
+                                <input type="text" autocomplete="off" id="test-startDate-1" class="layui-input"
+                                       placeholder="入住日期">
+                            </div>
+                            <div class="data-middle">
+                                <span id="data-check"><i class="fa fa-calendar-check-o"></i></span>
+                                <span class="layui-form-mid">-------</span>
+                                <span id="data-times"><i class="fa fa-calendar-times-o"></i></span>
+                            </div>
+                            <div class="data-out">
+                                <div class="layui-input-inline">
+                                    <input type="text" autocomplete="off" id="test-endDate-1" class="layui-input"
+                                           placeholder="退房日期">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="search-button">
+            <button class="ui blue button" id="searchButton">搜索</button>
+        </div>
+    </div>
+</div>
+<!--中部推荐框-->
+<div class="banner-wrapper">
+    <div class="banner-font">酒店推荐★</div>
+
+    <!--轮播图-->
+    <div class="banner-lunbo">
+        <ul class="img-list">
+            <li class="img-button">
+                <a v-bind:href="hrefArray[index1]" target="_blank">
+                    <img v-bind:src="imgArray[index2]">
+                </a>
+            </li>
+        </ul>
+        <div class="pointer">
+            <a href="javascript:;" class="pointer-button" v-on:click="changeImg0"></a>
+            <a href="javascript:;" class="pointer-button" v-on:click="changeImg1"></a>
+            <a href="javascript:;" class="pointer-button" v-on:click="changeImg2"></a>
+            <a href="javascript:;" class="pointer-button" v-on:click="changeImg3"></a>
+        </div>
+        <div class="prev-next">
+            <a class="prev" href="javascript:;" v-on:click="prev">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="next" href="javascript:;" v-on:click="next">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!--下部推荐框-->
+<div class="bottom-wrapper">
+    <div class="bottom-bar-1">寻找品牌酒店</div>
+    <div class="bottom-bar-2">已经太久没旅行了？看看这些舒适的小屋，准备好体验旅途中的温馨享受~</div>
+    <div class="card-wrapper">
+        <div class="ui link cards">
+            <div class="card" id="card-1" onclick="hotel_info(443586)">
+                <div class="image">
+                    <img src="http://pix3.agoda.net/hotelimages/443/443586/443586_14070818370020192446.jpg?s=312x">
+                </div>
+                <div class="content">
+                    <div class="header">维也纳酒店成都会展中心店</div>
+                    <div class="meta">
+                        <a>hotel</a>
+                    </div>
+                    <div class="description">
+                        it's a international hotel
+                    </div>
+                </div>
+                <div class="extra content">
+                        <span class="right floated">
+                            brand:Vienna Hotel Group
+                        </span>
+                    <span>
+                            <i class="building outline icon"></i>
+                            Cheng Du
+                        </span>
+                </div>
+            </div>
+            <div class="card" id="card-2" onclick="hotel_info(410695)">
+                <div class="image">
+                    <img src="http://pix4.agoda.net/hotelimages/410/410695/410695_15062910350031116775.jpg?s=312x">
+                </div>
+                <div class="content">
+                    <div class="header">汉庭成都春熙路太古里酒店</div>
+                    <div class="meta">
+                        <span class="date">hotel</span>
+                    </div>
+                    <div class="description">
+                        Hanting Hotel is famous hotel in Cheng Du
+                    </div>
+                </div>
+                <div class="extra content">
+                        <span class="right floated">
+                            brand:Hanting Hotel
+                        </span>
+                    <span>
+                            <i class="building outline icon"></i>
+                            Cheng Du
+                        </span>
+                </div>
+            </div>
+            <div class="card" id="card-3" onclick="hotel_info(266793)">
+                <div class="image">
+                    <img src="http://pix5.agoda.net/hotelimages/266/266793/266793_15073016410033356036.jpg?s=312x">
+                </div>
+                <div class="content">
+                    <div class="header">速8酒店成都春熙店</div>
+                    <div class="meta">
+                        <a>hotel</a>
+                    </div>
+                    <div class="description">
+                        Super 8 is a cost-effective hotel
+                    </div>
+                </div>
+                <div class="extra content">
+                        <span class="right floated">
+                            brand:Super 8
+                        </span>
+                    <span>
+                            <i class="user icon"></i>
+                            Cheng Du
+                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="layui-btn layui-btn-normal" style="width: 80px;height: 100px;position: fixed;top: 40%;border-radius: 10px" id="logOut">登出</button>
+<!--****************************************************************************-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type='text/javascript' src='js/jquery-1.12.4.min.js'></script>
+<script src="layDate-v5.3.1/laydate/laydate.js"></script>
+<script src="layui/layui.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/all.js"></script>
+
+<script>
+    $(function () {
+        if ($.cookie('username') == null) {
+            $("#logOut").css('display','none')
+        }else{
+            $("#logOut").css('display','block')
+        }
+    });
+
+
+    layui.use('layer', function () {
+
+                $("#logOut").click(function () {
+                    layer.msg('登出成功！', {
+                        icon: 1,
+                        time: 1500,
+                        anim: 2,
+                    },function () {
+                        $.cookie("username", "", {expires: -1});
+                        window.location = "/"
+                    });
+
+                })
+
+
+                $("#searchButton").click(function () {
+                    if ($("#hotel_name").val() == "") {
+                        layer.msg('酒店名不能为空！请重新输入', {
+                            icon: 5,
+                            time: 1500,
+                            anim: 2,
+                        });
+                    } else {
+                        $.cookie("hotelName", $("#hotel_name").val());
+                        window.location = "/search_result"
+                        // $.ajax({
+                        //     url: '/hotel/queryHotel',
+                        //     type: 'post',
+                        //     dataType: 'json',
+                        //     data: {
+                        //         hotelTranslatedName: $("#hotel_name").val()
+                        //     },
+                        //     success: function (res) {
+                        //         if(res.data.records.length == 0){
+                        //             layer.msg('无结果！请在更换一个酒店名字', {
+                        //                 icon: 5,
+                        //                 time: 2000,
+                        //                 anim: 1,
+                        //             });
+                        //         }else{
+                        //             console.log(res)
+                        //             // window.location = "/search_result"
+                        //         }
+                        //     }
+                        // })
+                    }
+
+                })
+            }
+        )
+
+
+        function hotel_info(hotel_id) {
+            $.cookie('index', "index");
+            $.cookie('hotel_id', hotel_id);
+            window.location = "/hotel_information"
+        }
+
+        laydate.render({
+            elem: '#test6'
+            //设置开始日期、日期日期的 input 选择器
+            //数组格式为 2.6.6 开始新增，之前版本直接配置 true 或任意分割字符即可
+            , range: ['#test-startDate-1', '#test-endDate-1'],
+            theme: "#FF6A00",
+            min: 0,
+            max: 30,
+        });
+
+
+</script>
+
+<script type="text/javascript">
+    //完成轮播效果
+    let img = document.getElementsByClassName("img-button");
+    let pointer = document.getElementsByClassName("pointer-button");
+    var imgList = new Vue({
+        el: ".banner-lunbo",
+        data: {
+            //hrefArray存放每个酒店连接
+            hrefArray: ["", "", "", ""],
+            index1: 0,
+            //imgArray存放每个酒店图片
+            imgArray: ["images/hotel3.webp", "images/hotel2.jpg", "images/hotel1.jpg", "images/hotel4.jpg"],
+            index2: 0,
+        },
+        methods: {
+            changeImg0: function () {
+                this.index1 = 0;
+                this.index2 = 0;
+            },
+            changeImg1: function () {
+                this.index1 = 1;
+                this.index2 = 1;
+            },
+            changeImg2: function () {
+                this.index1 = 2;
+                this.index2 = 2;
+            },
+            changeImg3: function () {
+                this.index1 = 3;
+                this.index2 = 3;
+            },
+            prev: function () {
+                if (this.index1 != 0) {
+                    this.index1--;
+                    this.index2--;
+                }
+            },
+            next: function () {
+                if (this.index1 != 3) {
+                    this.index1++;
+                    this.index2++;
+                }
+            },
+        }
+    })
+</script>
+
+</body>
+
+</html>

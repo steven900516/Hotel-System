@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地图模式展示</title>
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <!--引入重置样式表-->
+    <link rel="stylesheet" href="css/reset.css">
+    <!--引入公共样式表-->
+    <link rel="stylesheet" href="css/base.css">
+    <!--引入当前页面样式表-->
+    <link rel="stylesheet" href="css/hotel_information.css">
+    <!--引入图标字体样式-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <script src="https://kit.fontawesome.com/8d6e7b9682.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type='text/javascript' src='js/jquery-1.12.4.min.js'></script>
+    <script src="layDate-v5.3.1/laydate/laydate.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="js/all.js"></script>
+    <link rel="stylesheet" href="/css/map.css">
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0& ak=S8cU9Wn0tmSGYH14actShuoCTb0gs1wX"></script>
+</head>
+<body>
+<div class="topbar-wrapper layui-bg-cyan">
+    <!--顶部欢迎界面-->
+    <div class="welcome">
+        欢迎访问Hotel.com。继续访问
+        <strong class="repository">项目仓库：</strong>
+        <a href="https://gitlab.suncaper.net/steven900516/hotel">gitlab.suncaper.net/steven900516/hotel</a>
+        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" style="position: relative;left: 600px" id="enter">管理员入口
+            <i class="layui-icon layui-icon-right"></i>
+        </button>
+    </div>
+    <!--顶部导航栏-->
+    <div class="navigation-bar">
+        <!--左侧导航栏-->
+        <div class="home">
+            <img class="ui medium circular image" src="images/index.png">
+                <div style="position: relative;top:-40px;left:70px" id="back"><i class="chevron left icon"></i><span>返回<span>
+            </div>
+        </div>
+
+
+        <!--右侧导航栏-->
+        <ul class="service">
+            <li><a>个人信息<i class="fa fa-user"></i></a></li>
+            <li><a href="/my_order" id="own_order">我的订单</a></li>
+            <li><a href="/login" id="lohr">登录/注册</a></li>
+            <li><a href="/">首页</a></li>
+        </ul>
+    </div>
+    <div id="mapMiddle">
+
+    </div>
+</div>
+
+
+<script>
+
+    function info(this1){
+        console.log(this1)
+        console.log($(this1).parent())
+        // $.cookie('hotel_id',id)
+        // window.location = "/hotel_information"
+    }
+
+
+    $("#back").click(function (){
+        window.location = "/search_result"
+    })
+
+    $(function () {
+        $.ajax({
+            url: "/hotel/allHotel",
+            method: 'post',
+            dataType: 'json',
+            data:{
+                hotelName: unescape($.cookie("hotelName"))
+            },
+            success:function (res) {
+                var lists = []
+                for(i in res.data){
+                    var every = {}
+                    every.hotelId = res.data[i].hotelId
+                    every.hotelName = res.data[i].hotelTranslatedName
+                    every.starRating = res.data[i].starRating
+                    every.lng = res.data[i].longitude
+                    every.lat = res.data[i].latitude
+                    lists.push(every)
+                }
+
+
+                //创建标注点并添加到地图中
+                function addMarker(lists) {
+                    //循环建立标注点
+                    for (var i = 0, pointsLen = lists.length; i < pointsLen; i++) {
+                        var point = new BMap.Point(lists[i].lng, lists[i].lat); //将标注点转化成地图上的点
+                        var marker = new BMap.Marker(point); //将点转化成标注点
+                        map.addOverlay(marker);  //将标注点添加到地图
+                        (function() {
+                            var thePoint = lists[i];
+                            marker.addEventListener("click",
+                                function() {
+                                    showInfo(this,thePoint);
+                                });
+                        })();
+                    }
+                }
+
+
+                function showInfo(thisMarker, point) {
+                    //获取点的信息
+
+                    var sContent =
+                        '<ul style="margin:0 0 5px 0;padding:0.2em 0">'
+                        + '<li style="line-height: 26px;font-size: 15px;">'
+                        + '<span style="width: 50px;display: inline-block;">名称：</span>' + point.hotelName + '</li>'
+                        + '<li style="line-height: 26px;font-size: 15px;">'
+                        + '<span style="width: 50px;display: inline-block;">星级：</span>' + point.starRating + '</li>'
+                        +  '<li style="line-height: 26px;font-size: 15px;">'
+                        + '<span  style="width: 50px;display: inline-block" id = "hotelId ' + point.hotelId  + '">ID：</span>' + point.hotelId + '</li>'
+                        + '</ul>';
+                    var infoWindow = new BMap.InfoWindow(sContent); //创建信息窗口对象
+                    thisMarker.openInfoWindow(infoWindow); //图片加载完后重绘infoWindow
+                }
+                //创建地图
+                var map = new BMap.Map("mapMiddle");
+                map.centerAndZoom(new BMap.Point(104.07, 30.67), 12);  // 设置中心点
+                map.setCurrentCity("成都");          //设置为成都
+                map.addControl(new BMap.MapTypeControl());
+                map.enableDoubleClickZoom(true);
+                map.enableScrollWheelZoom(true);  //添加滚轮缩放
+                addMarker(lists);
+            },
+            error:function (){
+                console.log( unescape($.cookie("hotelName")))
+                alert("地图模式转换失败！")
+            }
+        })
+
+    })
+</script>
+</div>
+</body>
+</html>

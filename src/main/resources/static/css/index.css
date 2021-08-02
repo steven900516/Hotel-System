@@ -1,0 +1,297 @@
+.topbar-wrapper {
+    /*设置宽度*/
+    width: 100%;
+    /*设置高度*/
+    height: 120px;
+    /*设置行高*/
+    line-height: 50px;
+}
+
+.topbar-wrapper .welcome {
+    height: 50px;
+    font-size: 14px;
+    margin-left: 20px;
+}
+
+.topbar-wrapper .welcome .repository {
+    font-weight: bolder;
+}
+
+.topbar-wrapper .welcome a {
+    font-size: 18px;
+    color: aliceblue;
+    text-decoration-line: underline;
+}
+
+.topbar-wrapper .navigation-bar {
+    height: 70px;
+    line-height: 70px;
+    background-color: white;
+    color: #2F4056;
+    position: relative;
+    border-bottom: 1px #cccccc solid;
+}
+
+.topbar-wrapper .navigation-bar .home {
+    font-size: 20px;
+    position: relative;
+    float: left;
+    left: 150px;
+    top: -40px;
+}
+
+.topbar-wrapper .navigation-bar .home img {
+    height: 40px;
+    width: 40px;
+    left: -45px;
+    top: 55px;
+}
+
+.topbar-wrapper .navigation-bar .service {
+    position: relative;
+    float: right;
+    right: 100px;
+}
+
+.topbar-wrapper .navigation-bar .service li {
+    position: relative;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #2F4056;
+}
+
+/*中部搜索栏*/
+
+.search-bgimg {
+    height: 450px;
+}
+
+.search-bgimg #bgimg {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -40px;
+    z-index: -1;
+}
+
+.search-wrapper {
+    width: 85%;
+    height: 250px;
+    margin: 35px auto;
+    background-color: white;
+    color: #2F4056;
+    border-top: 0px;
+    position: relative;
+    z-index: 10;
+    top: -440px;
+    padding-left: 40px;
+    border-radius: 10px;
+}
+
+.search-wrapper .search-list {
+    position: relative;
+    padding-top: 33px;
+}
+
+.search-wrapper .search-list li {
+    padding-top: 30px;
+    position: relative;
+    float: left;
+}
+
+.search-wrapper .search-list .search-font {
+    font-size: 25px;
+    left: 0px;
+}
+
+.search-wrapper .search-list .hotel-font {
+    font-size: 30px;
+    top: 55px;
+    left: -100px;
+}
+
+.search-wrapper .search-list .search-bar {
+    top: 50px;
+    left: -80px;
+}
+
+#search-bar {
+    width: 400px;
+    height: 45px;
+}
+
+.search-wrapper .search-list .layui-form {
+    float: right;
+}
+
+.search-wrapper .search-list .layui-form .data-in {
+    position: relative;
+    right: 400px;
+    top: 50px;
+}
+
+#test-startDate-1 {
+    width: 200px;
+    height: 44px;
+}
+
+#test-endDate-1 {
+    width: 200px;
+    height: 44px;
+}
+
+.search-wrapper .search-list .layui-form .layui-form-mid {
+    position: relative;
+    right: 150px;
+    top: 10px;
+}
+
+.search-wrapper .search-list .layui-form #data-check {
+    position: relative;
+    right: 230px;
+    top: 18px;
+    font-size: 20px;
+}
+
+.search-wrapper .search-list .layui-form #data-times {
+    position: relative;
+    right: 150px;
+    top: 18px;
+    font-size: 20px;
+}
+
+.search-wrapper .search-list .layui-form .data-out {
+    position: relative;
+    right: 50px;
+    top: -33px;
+}
+
+.search-wrapper .search-button {
+    float: left;
+    position: relative;
+    left: -100px;
+    top: 150px;
+
+}
+
+/*中部导航栏*/
+
+.banner-wrapper {
+    width: 85%;
+    height: 420px;
+    margin: 70px auto;
+}
+
+.banner-wrapper .banner-font {
+    font-size: 25px;
+    color: #2F4056;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+.banner-wrapper .lunbo-wrapper {
+    height: 380px;
+    background-color: red;
+}
+
+.banner-wrapper .lunbo-wrapper img {
+    height: 100%;
+    width: 100%;
+}
+
+.banner-lunbo {
+    position: relative;
+    height: 460px;
+}
+
+.banner-lunbo .img-list li {
+    position: absolute;
+}
+
+.banner-lunbo img {
+    width: 1148px;
+    height: 450px;
+}
+
+.pointer {
+    position: absolute;
+    right: 35px;
+    bottom: 22px;
+    z-index: 999;
+}
+
+.pointer a {
+    float: left;
+    width: 6px;
+    height: 6px;
+    border: 5px solid;
+    border-radius: 50%;
+    border-color:blanchedalmond;
+    background-color: rgba(0, 0, 0, 0.4);
+    margin-left: 6px;
+}
+
+.pointer a:hover {
+    background-color: white;
+    border-color: white;
+}
+
+.prev-next a {
+    width: 41px;
+    height: 69px;
+    line-height: 69px;
+    text-align: center;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    margin: auto 0;
+}
+
+.prev-next a i {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 25px;
+    margin-top: 23px;
+}
+
+.prev-next a:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.prev-next a:hover i {
+    color: white;
+}
+
+.prev-next .prev {
+    left: 0px;
+}
+
+.prev-next .next {
+    right: 0px;
+}
+
+/*下部推荐框*/
+
+.bottom-wrapper {
+    width: 85%;
+    margin: 200px auto;
+}
+
+.bottom-wrapper .bottom-bar-1 {
+    font-size: 30px;
+    height: 60px;
+    line-height: 60px;
+    color: #2F4056;
+}
+
+.bottom-wrapper .bottom-bar-2 {
+    font-size: 15px;
+    height: 50px;
+    line-height: 50px;
+    color: #2F4056;
+}
+
+.bottom-wrapper .card {
+    flex: auto;
+}

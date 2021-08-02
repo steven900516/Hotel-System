@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <!--引入重置样式表-->
+    <link rel="stylesheet" href="css/reset.css">
+    <!--引入公共样式表-->
+    <link rel="stylesheet" href="css/base.css">
+    <!--引入当前页面样式表-->
+    <link rel="stylesheet" href="css/index.css">
+    <!--引入图标字体样式-->
+    <script src="https://kit.fontawesome.com/8d6e7b9682.js" crossorigin="anonymous"></script>
+    <!--轮播样式-->
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <!--semanticUI-->
+    <link rel="stylesheet" href="css/search_result.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+</head>
+<body>
+<div class="topbar-wrapper layui-bg-cyan">
+    <!--顶部欢迎界面-->
+    <div class="welcome">
+        欢迎访问Hotel.com。继续访问
+        <strong class="repository">项目仓库：</strong>
+        <a href="https://gitlab.suncaper.net/steven900516/hotel">gitlab.suncaper.net/steven900516/hotel</a>
+        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" style="position: relative;left: 600px" id="enter">管理员入口
+            <i class="layui-icon layui-icon-right"></i>
+        </button>
+    </div>
+    <!--顶部导航栏-->
+    <div class="navigation-bar">
+        <!--左侧导航栏-->
+        <div class="home">
+            <img class="ui medium circular image" src="images/index.png">
+            搜索结果
+        </div>
+        <!--右侧导航栏-->
+        <ul class="service">
+            <li><a href="/personal" id="comm">个人评论管理<i class="fa fa-user"></i></a></li>
+            <li><a href="/my_order" id="own_order">我的订单</a></li>
+
+            <li><a href="/">首页</a></li>
+            <li><a href="/login" id="lohr">登录/注册</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div id="middlePart">
+    <button type="button" class="layui-btn layui-btn-fluid layui-btn-normal" style="margin-top: 5px"  id="showMap">以地图模式展示</button>
+    <table id="demo" lay-filter="test" style="width: 90%"></table>
+</div>
+<!--***************************************js*****-->
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type='text/javascript' src='js/jquery-1.12.4.min.js'></script>
+<script src="layDate-v5.3.1/laydate/laydate.js"></script>
+<script src="layui/layui.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/search.js"></script>
+<script src="js/all.js"></script>
+
+<script type="text/html" id="rowToolbar">
+    <a class="layui-btn layui-btn-radius layui-btn-normal" lay-event="look" style="font-size: 15px">查看详情</a>
+</script>
+
+<script type="text/html" id="imgevery">
+    <img src="{{d.photo1}}" style="width: 120px;height: 105px">
+</script>
+
+<script>
+    layui.use(['table', 'rate'], function () {
+        rate = layui.rate;
+        var table = layui.table;
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 470,
+            toolbar: '#toolbarDemo'
+            , url: '/hotel/queryHotel' //数据接口
+            ,skin: 'line'
+            , page: true //开启分页,
+            , where: {hotelTranslatedName: unescape($.cookie("hotelName"))},
+            request: {
+                pageName: 'pageNo' //页码的参数名称，默认：page
+                , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                pageNo = res.data.current
+                pageSize = res.data.size
+
+                if (res.data.records.length == 0) {
+                    layer.msg('暂时没有该酒店哦~亲', {
+                        icon: 1,
+                        time: 1500,
+                        anim: 2,
+                    });
+                }
+
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.records //解析数据列表
+                };
+            }
+            , limit: 3,
+            limits: [3, 6, 9]
+            , cols: [
+                [ //表头
+                    {
+                        field: 'photo1',
+                        title: '预览图',
+                        width: 150,
+                        align: "center",
+                        style: "height:100px",
+                        templet: "#imgevery"
+                    },
+                    {field: 'hotelId', title: '酒店ID', width: 100},
+                    {field: 'hotelTranslatedName', title: '酒店名', width: 200}
+                    , {
+                    field: 'brandName', title: '连锁名', width: 80, templet: function (d) {
+                        if (d.brandName == null) {
+                            return '<a >无</a>'
+                        } else {
+                            return d.brandName
+                        }
+                    }
+                }
+                    , {field: 'addressline', title: '地址', width: 200}
+                    , {
+                    field: 'yearopend', title: '开业时间', width: 100, templet: function (d) {
+                        if (d.yearopened == null) {
+                            return '<span style="font-size: 15px;color: red">未记录</span>'
+                        } else {
+                            return d.yearopened
+                        }
+                    }
+                },
+                    {
+                        field: 'yearrenovated', title: '翻新时间', width: 100, templet: function (d) {
+                            if (d.yearrenovated == null) {
+                                return '<span style="font-size: 15px;color: red">暂时没有翻新</span>'
+                            } else {
+                                return d.yearrenovated
+                            }
+                        }
+                    },
+                    {
+                        field: 'starRating', title: '星级', width: 200, templet: function (d) {
+                            return '<div id="star' + d.hotelId + '"></div>'
+                        }
+                    }
+
+                    , {fixed: 'right', title: '操作', toolbar: '#rowToolbar', width: 140}
+                ]
+            ]
+            ,done:function(res){
+                var data = res.data;//返回的json中data数据
+                console.log(data)
+                for (var item in data) {
+                    //司机星级
+                    rate.render({
+                        elem: '#star'+data[item].hotelId + ''         //绑定元素
+                        , length: 5            //星星个数
+                        , value: data[item].starRating             //初始化值
+                        , theme: '#fffb0b'     //颜色
+                        , half: true           //支持半颗星
+                        , text: true           //显示文本，默认显示 '3.5星'
+                        , readonly: true      //只读
+                    });
+
+                }
+            }
+
+
+        });
+        table.on('tool(test)', function(obj){
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+            switch(layEvent){
+                case 'look':
+                    $.cookie('hotel_id',data.hotelId);
+                    window.location = '/hotel_information'
+                    break;
+            };
+        });
+    })
+</script>
+<script>
+    $("#showMap").click(function () {
+        window.location = "/map"
+    })
+</script>
+</body>
+</html>

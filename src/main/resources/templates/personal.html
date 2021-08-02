@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <!--引入重置样式表-->
+    <link rel="stylesheet" href="css/reset.css">
+    <!--引入公共样式表-->
+    <link rel="stylesheet" href="css/base.css">
+    <!--引入当前页面样式表-->
+    <link rel="stylesheet" href="css/index.css">
+    <!--引入图标字体样式-->
+    <script src="https://kit.fontawesome.com/8d6e7b9682.js" crossorigin="anonymous"></script>
+    <!--轮播样式-->
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <!--semanticUI-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type='text/javascript' src='js/jquery-1.12.4.min.js'></script>
+    <script src="layDate-v5.3.1/laydate/laydate.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="js/all.js"></script>
+    <title>个人评论管理</title>
+</head>
+<body>
+<div class="topbar-wrapper layui-bg-cyan">
+    <!--顶部欢迎界面-->
+    <div class="welcome">
+        欢迎访问Hotel.com。继续访问
+        <strong class="repository">项目仓库：</strong>
+        <a href="https://gitlab.suncaper.net/steven900516/hotel">gitlab.suncaper.net/steven900516/hotel</a>
+        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" style="position: relative;left: 600px" id="enter">管理员入口
+            <i class="layui-icon layui-icon-right"></i>
+        </button>
+    </div>
+    <!--顶部导航栏-->
+    <div class="navigation-bar">
+        <!--左侧导航栏-->
+        <div class="home">
+            <img class="ui medium circular image" src="images/index.png">
+            个人评论管理
+        </div>
+        <!--右侧导航栏-->
+        <ul class="service">
+            <li><a href="/personal" id="comm">个人评论管理<i class="fa fa-user"></i></a></li>
+            <li><a href="/my_order" id="own_order">我的订单</a></li>
+
+            <li><a href="/">首页</a></li>
+            <li><a href="/login" id="lohr">登录/注册</a></li>
+        </ul>
+    </div>
+
+    <div style="margin: 10px auto;width: 80%">
+        <table id="demo" lay-filter="test" style="width: 90%"></table>
+    </div>
+</div>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-radius-sm layui-btn-danger" lay-event="deletes">删除选中评论</button>
+    </div>
+</script>
+<script>
+    layui.use(['table', 'rate'], function () {
+        rate = layui.rate;
+        var table = layui.table;
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 350,
+            toolbar: '#toolbarDemo'
+            , url: '/comment/showCommentByUser' //数据接口
+            ,skin: 'line'
+            , page: true //开启分页,
+            , where: {username: ($.cookie("username"))},
+            request: {
+                pageName: 'pageNo' //页码的参数名称，默认：page
+                , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                pageNo = res.data.current
+                pageSize = res.data.size
+
+                if (res.data.records.length == 0) {
+                    layer.msg('暂时没有评论哦~亲', {
+                        icon: 1,
+                        time: 1500,
+                        anim: 2,
+                    });
+                }
+
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.records //解析数据列表
+                };
+            }
+            , limit: 4,
+            limits: [4, 8, 12]
+            , cols: [
+                [ //表头
+                    {type: 'checkbox'},
+                    {field: 'hotelId' ,title: '酒店ID',width: '20%'},
+                    {
+                        field: 'time',
+                        title: '发布时间',
+                        width: '20%',
+                        align: "center",
+                    },
+                    {field: 'comment', title: '评论内容', width: '56%'},
+
+                ]
+            ]
+            ,done:function(res){
+                var data = res.data;//返回的json中data数据
+                console.log(data)
+                for (var item in data) {
+                    //司机星级
+                    rate.render({
+                        elem: '#star'+data[item].hotelId + ''         //绑定元素
+                        , length: 5            //星星个数
+                        , value: data[item].starRating             //初始化值
+                        , theme: '#fffb0b'     //颜色
+                        , half: true           //支持半颗星
+                        , text: true           //显示文本，默认显示 '3.5星'
+                        , readonly: true      //只读
+                    });
+
+                }
+            }
+
+
+        });
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'deletes':
+                    deletesEvent()
+                    break;
+            }
+        });
+
+        function deletesEvent() {
+            var checkStatus = table.checkStatus('demo'); //idTest 即为基础参数 id 对应的值
+            var pids = checkStatus.data;
+            if (pids.length == 0) {
+                layer.msg("请至少选择一条数据", {icon: 4, time: 1500})
+            } else {
+                layer.confirm('确定删除选中评论?', {icon: 3, title: '提示'}, function (index) {
+                    //需要将选中的数据的id传递到后台： 很多id
+                    var ids = []
+                    for (var i = 0; i < pids.length; i++) {
+                        ids.push(pids[i].id)
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "/comment/deleteCommentByUser",
+                        data: {ids: ids},
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.status) {
+                                layer.msg("删除成功", {icon: 1, time: 2000}, function () {
+                                    layer.closeAll()
+                                    //重新刷新表格
+                                    table.reload('demo', {
+                                        url: '/comment/showCommentByUser'
+                                        , where: {
+                                            username: ($.cookie("username"))
+                                        },
+                                        limit: 4,
+                                        limits: [4, 8, 12],
+                                        request: {
+                                            pageName: 'pageNo' //页码的参数名称，默认：page
+                                            , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+                                        }
+                                    })
+                                })
+                            }
+                        },
+                        error: function (){
+                            alert("删除失败！")
+                        }
+                    })
+
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>
